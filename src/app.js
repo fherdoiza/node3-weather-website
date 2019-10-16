@@ -7,6 +7,8 @@ const weather = require('./utils/weather.js')
 
 const app = express();
 
+const port = process.env.PORT || 3000;
+
 //console.log(__dirname);
 //console.log(__filename);
 //console.log(path.join(__dirname, '../public'));
@@ -49,20 +51,28 @@ app.get('/about/me', (req, res) => {
 
 //http://localhost:3000/weather?address=Quito
 app.get('/weather', (req, res) => {
-  if(!req.query.address){
+  if (!req.query.address) {
     addressError(res, 'You must provide an address.');
   }
   const currentLocation = req.query.address;
-  if(currentLocation){
-    geocode(currentLocation, (error, {lat, lng, location}={}) =>{ // Object destructoring view 7-default-params
-      if(error){
+  if (currentLocation) {
+    geocode(currentLocation, (error, {
+      lat,
+      lng,
+      location
+    } = {}) => { // Object destructoring view 7-default-params
+      if (error) {
         addressError(res, error);
-      }else{
-        weather(lat, lng, (error, {summary, temp, precip}={})=>{ // Object destructoring view 7-default-params
-          if(error){
+      } else {
+        weather(lat, lng, (error, {
+          summary,
+          temp,
+          precip
+        } = {}) => { // Object destructoring view 7-default-params
+          if (error) {
             addressError(res, error);
-          }else{
-            let forecast = req.query.address + '  '+ summary + ' It is currently '+ temp +' degrees and '+ precip +'% chance of rain.';
+          } else {
+            let forecast = req.query.address + '  ' + summary + ' It is currently ' + temp + ' degrees and ' + precip + '% chance of rain.';
             res.send({
               forecast: forecast,
               location: location,
@@ -82,7 +92,7 @@ const addressError = function (res, stringError) {
 
 //http://localhost:3000/products?search=1
 app.get('/products', (req, res) => {
-  if(!req.query.search){
+  if (!req.query.search) {
     return res.send({
       error: 'You must provide a search term.'
     });
@@ -96,11 +106,11 @@ app.get('/products', (req, res) => {
 app.get('*', (req, res) => {
   res.render('404', {
     title: '404',
-    errorMessage:'page not found'
+    errorMessage: 'page not found'
   });
 });
 
 
-app.listen(3000, () =>{
-  console.log('Server is up on port 3000');
+app.listen(port, () => {
+  console.log('Server is up on port ' + port);
 });

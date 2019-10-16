@@ -12,7 +12,7 @@ function callWeather(address) {
 
   paragraphResp.textContent = 'Loading...';
 
-  fetch('http://localhost:3000/weather?address=' + address).then(resp => {
+  fetch('/weather?address=' + address).then(resp => {
     resp.json().then((data) => {
       if (data.error) {
         console.log(data.error);
