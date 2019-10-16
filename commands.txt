@@ -1,0 +1,12 @@
+nodemon src/app.js -e js,hbs
+
+
+heroku login
+// only one time inside the project
+heroku keys:add
+heroku create herdoiza-weather-app
+
+
+// push to the server
+git push heroku master
+
